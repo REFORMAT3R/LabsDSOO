@@ -20,4 +20,15 @@ public class Biblioteca{
             System.out.println(l);
         }
     }
+
+    public boolean validarLibro(String ISBN){
+        if (biblioteca.containsKey(ISBN)) {
+            System.out.println("El libro existe.");
+            return true;
+        } else {
+            System.out.println("El libro que buscas no existe, vuelva a intentarlo");
+            return false;
+        }
+    }
+
 }
