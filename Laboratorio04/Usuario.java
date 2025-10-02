@@ -2,10 +2,10 @@ import java.util.*;
 
 public class Usuario{
     private String nombre;
-    private String CUI;
-    private HashMap <String,Libro> librosprestados = new HashMap<>();
+    private String CUI;  
+    private HashMap <String,Libro> librosprestados = new HashMap<>(); 
     
-    public Usuario(String nombre, String CUI) {
+    public Usuario(String nombre, String CUI) { 
         this.nombre = nombre;
         this.CUI = CUI;
     }
@@ -14,7 +14,7 @@ public class Usuario{
         return nombre;
     }
 
-    public String getCUI() {
+    public  String getCUI() {
         return CUI;
     }
 
@@ -29,6 +29,6 @@ public class Usuario{
     }
 
     public String toString(){
-        return nombre + " - " + CUI + " - Libros prestados: " + librosprestados.size();
+        return nombre + " - " + CUI + " | Libros prestados: " + librosprestados.size();
     }
 }
