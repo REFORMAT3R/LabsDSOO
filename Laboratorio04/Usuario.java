@@ -2,10 +2,10 @@ import java.util.*;
 
 public class Usuario{
     private String nombre;
-    private String CUI;
-    private HashMap <String,Libro> librosprestados = new HashMap<>();
+    private int CUI;  /*Cambie el tipo de dato del CUI a Int */
+    private HashMap <String,Libro> librosprestados = new HashMap<>(); /*No va en la clase Usuario, mejor crear una clase Prestamos como intermediario */
     
-    public Usuario(String nombre, String CUI) {
+    public Usuario(String nombre, int CUI) { 
         this.nombre = nombre;
         this.CUI = CUI;
     }
@@ -14,10 +14,11 @@ public class Usuario{
         return nombre;
     }
 
-    public String getCUI() {
+    public  int getCUI() {
         return CUI;
     }
 
+/*Tambien que esto este en la clase Prestamos */
     public HashMap<String, Libro> getLibrosprestados() {
         return librosprestados;
     }
