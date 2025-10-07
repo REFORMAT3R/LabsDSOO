@@ -23,12 +23,13 @@ public class Usuario{
     }
 
     public void mostrarLibrosprestados(){
+        System.out.println("Lista de libros prestados");
         for(Libro l : librosprestados.values()){
             System.out.println(l);
         }
     }
 
     public String toString(){
-        return nombre + " - " + CUI + " | Libros prestados: " + librosprestados.size();
+        return "Usuario: " + nombre + " | Código: " + CUI + " | Libros prestados: " + librosprestados.size() + "\n";
     }
 }
