@@ -23,11 +23,15 @@ public class Libro {
         return ISBN;
     }
 
-    public boolean isDisponible() {
+    public boolean getDisponible() {
         return disponible;
     }
     
+    public void setDisponible(boolean disponible) {
+        this.disponible = disponible;
+    }
+
     public String toString(){
-        return titulo + " - " + autor + " (ISBN: " + ISBN + ")";
+        return titulo + " - " + autor + " (ISBN: " + ISBN + ")\n";
     }
 }
