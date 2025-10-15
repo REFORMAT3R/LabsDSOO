@@ -1,7 +1,10 @@
 public class Main {
     public static void main(String[] args) {
         
+<<<<<<< HEAD
         Biblioteca biblioteca = new Biblioteca();
+=======
+>>>>>>> c71314cd834cb8e859078198fa27380747191bfa
         RegistroUsuarios registroUsuarios = new RegistroUsuarios();
         Sistema sistema = new Sistema();
         
@@ -26,4 +29,8 @@ public class Main {
         //El código ya está intenten no modificar mucho, solo agregar métodos clases y poner detalles o ser más especificos con 
         //algunas acciones como ver devolver o prestar libro.
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> c71314cd834cb8e859078198fa27380747191bfa
