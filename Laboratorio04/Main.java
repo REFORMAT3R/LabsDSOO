@@ -20,9 +20,6 @@ public class Main {
         sistema.devolverLibro(registroUsuarios.getRegistroUsuarios().get(0).getLibrosprestados(),"978-0307474728"); //Devuelve el libro prestado
         sistema.mostrarEstadoDevolver(registroUsuarios.getRegistroUsuarios().get(0).getLibrosprestados(),"978-0307474728"); //Muestra si se pudo devolver el libro o no
         System.out.println(registroUsuarios.getRegistroUsuarios().get(0)); // Muestra usuario 0
-
-        //NOTA: Se está trabajando solo con un libro, probar con más libros.    
-        //El código ya está intenten no modificar mucho, solo agregar métodos clases y poner detalles o ser más especificos con 
-        //algunas acciones como ver devolver o prestar libro.
+        
     }
 }
