@@ -15,4 +15,17 @@ public class RegistroUsuarios {
         return registroUsuarios;
     }
 
+    public void agregarUsuario(Usuario usuario) {
+        registroUsuarios.add(usuario);
+        System.out.println("Usuario registrado exitosamente: " + usuario.getNombre());
+    }
+    
+    public Usuario buscarUsuario(String cui) {
+        for (Usuario u : registroUsuarios) {
+            if (u.getCUI().equals(cui)) {
+                return u;
+            }
+        }
+        return null; 
+    }
 }

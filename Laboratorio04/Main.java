@@ -21,5 +21,7 @@ public class Main {
         sistema.mostrarEstadoDevolver(registroUsuarios.getRegistroUsuarios().get(0).getLibrosprestados(),"978-0307474728"); //Muestra si se pudo devolver el libro o no
         System.out.println(registroUsuarios.getRegistroUsuarios().get(0)); // Muestra usuario 0
         
+        Menu menu = new Menu(new Biblioteca(), registroUsuarios, sistema);
+        menu.iniciar();
     }
 }

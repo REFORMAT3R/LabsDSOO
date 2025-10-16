@@ -15,6 +15,11 @@ public class Biblioteca{
         return biblioteca;
     }
 
+    public void agregarLibro(Libro libro) {
+        biblioteca.put(libro.getISBN(), libro);
+        System.out.println("Libro agregado exitosamente: " + libro.getTitulo());
+    }
+    
     public void mostrarLibros(){
         for(Libro l : biblioteca.values()){
             System.out.println(l);
