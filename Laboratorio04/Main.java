@@ -1,12 +1,9 @@
 public class Main {
     public static void main(String[] args) {
         
-<<<<<<< HEAD
         Biblioteca biblioteca = new Biblioteca();
-=======
->>>>>>> c71314cd834cb8e859078198fa27380747191bfa
         RegistroUsuarios registroUsuarios = new RegistroUsuarios();
-        Sistema sistema = new Sistema();
+        Sistema sistema = new Sistema(biblioteca);
         
         System.out.println(registroUsuarios.getRegistroUsuarios().get(0)); //Muestra usuario 0
         sistema.prestarLibro(registroUsuarios.getRegistroUsuarios().get(0).getLibrosprestados(),"978-0307474728"); //Usuario 0 se presta un libro
@@ -25,12 +22,10 @@ public class Main {
         sistema.mostrarEstadoDevolver(registroUsuarios.getRegistroUsuarios().get(0).getLibrosprestados(),"978-0307474728"); //Muestra si se pudo devolver el libro o no
         System.out.println(registroUsuarios.getRegistroUsuarios().get(0)); // Muestra usuario 0
 
-        //NOTA: Se está trabajando solo con un libro, probar con más libros.    
-        //El código ya está intenten no modificar mucho, solo agregar métodos clases y poner detalles o ser más especificos con 
-        //algunas acciones como ver devolver o prestar libro.
+        Menu menu = new Menu(biblioteca, registroUsuarios, sistema);
+        menu.iniciar();
+
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> c71314cd834cb8e859078198fa27380747191bfa
+
+

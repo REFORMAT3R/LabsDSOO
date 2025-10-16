@@ -3,8 +3,8 @@ import java.util.*;
 public class Sistema {
     private Biblioteca biblioteca;
 
-    public Sistema(){
-        biblioteca = new Biblioteca();
+    public Sistema(Biblioteca biblioteca){
+        this.biblioteca = biblioteca;
     }
 
     //Métodos generales
