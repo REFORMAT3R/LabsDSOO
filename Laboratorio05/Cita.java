@@ -1,8 +1,5 @@
 package Laboratorio05;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 public class Cita {
     private String codigo;
     private Paciente paciente;
@@ -11,7 +8,8 @@ public class Cita {
     private String hora;
     private String estado;
 
-    public Cita(String codigo, Paciente paciente, Doctor doctor, String fecha, String hora, String estado) {
+    public Cita(String codigo, Paciente paciente, Doctor doctor, String fecha, 
+                String hora, String estado) {
         this.codigo = codigo;
         this.paciente = paciente;
         this.doctor = doctor;

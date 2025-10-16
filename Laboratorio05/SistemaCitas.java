@@ -3,12 +3,6 @@ package Laboratorio05;
 import java.util.*;
 
 public class SistemaCitas{
-    private RegistroDoctores listaDoctores;
-    
-
-    public SistemaCitas() {
-        listaDoctores = new RegistroDoctores();
-    }
 
     //Métodos de validación 
     public boolean existePaciente(HashMap<String, Paciente> registro, String codigoPaciente) {
@@ -33,6 +27,9 @@ public class SistemaCitas{
     }
 
     public boolean mismoDoctor(ArrayList<Cita> misCitas, String codigo){
+        if (misCitas == null || misCitas.isEmpty()) {
+            return true; // No tiene citas, se puede agendar
+        }
         for(Cita cita : misCitas){
             if(cita.getDoctor().getCodigo().equals(codigo))
                 return false;
@@ -47,7 +44,7 @@ public class SistemaCitas{
         noHayDuplicadoDNI(registro.getRegistro(), paciente.getDNI());
     }
 
-    //Si todas las validaciones son verdaderas se confirma que se peuda agregar al paciente
+    //Si todas las validaciones son verdaderas se confirma que se puda agregar al paciente
     public void confirmarAgregarPaciente(RegistroPacientes registro, Paciente paciente){
         if(confirmarTodasValidaciones(registro, paciente))
             registro.agregarPaciente(paciente);
@@ -80,15 +77,15 @@ public class SistemaCitas{
     }
 
     //Se usan las validaciones anteriores junto fecha y hora y mismoDoctor(Verifica si tiene cita con ese doctor)
-    public boolean validarCita(RegistroPacientes registro, Paciente paciente, Cita cita){
-        if(confirmarTodasValidaciones(registro, paciente) && validarFechaHora(cita.getFecha(), cita.getHora())
+    public boolean validarCita(Paciente paciente, Cita cita){
+        if(validarFechaHora(cita.getFecha(), cita.getHora())
         && mismoDoctor(paciente.getMiscitas(), cita.getDoctor().getCodigo()))
             return true;
         return false;
     }
 
-    public void agregarCita(RegistroPacientes registro, Paciente paciente, Cita cita){
-        if(validarCita(registro, paciente, cita))
+    public void agregarCita(Paciente paciente, Cita cita){
+        if(validarCita(paciente, cita))
             paciente.getMiscitas().add(cita);
     }
 
@@ -109,8 +106,8 @@ public class SistemaCitas{
     }
 
     //Se imprimen las validacines de agregar cita y si existe la cita
-    public void imprimirValidacionCita(RegistroPacientes registro, Paciente paciente, Cita cita) {
-        boolean esValida = validarCita(registro, paciente, cita);
+    public void imprimirValidacionCita(Paciente paciente, Cita cita) {
+        boolean esValida = validarCita(paciente, cita);
         if (esValida) {
             System.out.println("La cita es válida y puede agregarse.");
         } else {

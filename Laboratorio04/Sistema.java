@@ -32,9 +32,11 @@ public class Sistema {
 
     public void mostrarEstadoPrestamo(HashMap <String,Libro> librosprestados, String ISBN){
         if(librosprestados.containsKey(ISBN)){
-            System.out.println("El libro " + biblioteca.getBiblioteca().get(ISBN).getTitulo() +" se prestó correctamente\n");
+            System.out.println("El libro " + biblioteca.getBiblioteca().get(ISBN).getTitulo()
+                            +" se prestó correctamente\n");
         } else {
-            System.out.println("No se pudo prestar el libro " + biblioteca.getBiblioteca().get(ISBN).getTitulo() + "\n");
+            System.out.println("No se pudo prestar el libro " + biblioteca.getBiblioteca()
+                                .get(ISBN).getTitulo() + "\n");
         }
     }
 
@@ -51,9 +53,11 @@ public class Sistema {
 
     public void mostrarEstadoDevolver(HashMap <String,Libro> librosprestados, String ISBN){
         if(!librosprestados.containsKey(ISBN)){
-            System.out.println("El libro " + biblioteca.getBiblioteca().get(ISBN).getTitulo() + " se devolvió correctamente\n");
+            System.out.println("El libro " + biblioteca.getBiblioteca().get(ISBN).getTitulo()
+                                + " se devolvió correctamente\n");
         } else {
-            System.out.println("No se pudo devolver el libro " + biblioteca.getBiblioteca().get(ISBN).getTitulo() + "\n");
+            System.out.println("No se pudo devolver el libro " + biblioteca.getBiblioteca()
+                                .get(ISBN).getTitulo() + "\n");
         }
     }
 } 

@@ -30,6 +30,7 @@ public class Usuario{
     }
 
     public String toString(){
-        return "Usuario: " + nombre + " | Código: " + CUI + " | Libros prestados: " + librosprestados.size() + "\n";
+        return "Usuario: " + nombre + " | Código: " + CUI + 
+                " | Libros prestados: " + librosprestados.size() + "\n";
     }
 }
