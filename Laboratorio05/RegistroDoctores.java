@@ -1,9 +1,10 @@
 package Laboratorio05;
 
-import java.util.*;
+import java.util.*; 
 public class RegistroDoctores {
     private HashMap<String, Doctor> doctores;
 
+    /* Constructor */
     public RegistroDoctores() {
         this.doctores = new HashMap<>();
         inicializarDoctores();
