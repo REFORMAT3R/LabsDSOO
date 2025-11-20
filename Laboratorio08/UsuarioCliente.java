@@ -14,15 +14,13 @@ public class UsuarioCliente extends Usuario {
     public Cliente getCliente() {return cliente;}
     public void setCliente(Cliente cliente) {this.cliente = cliente;}
 
+    // Sobrescritura del método mostrarPermisos según la guía de laboratorio
     @Override
     public void mostrarPermisos() {
-        System.out.println("=== Permisos de Usuario Cliente ===");
-        System.out.println("1. Consultar saldo");
-        System.out.println("2. Ver historial de transacciones");
-        System.out.println("3. Realizar depósitos");
-        System.out.println("4. Realizar retiros");
-        System.out.println("5. Realizar transferencias");
-        System.out.println("6. Modificar datos personales");
+        System.out.println("=== Permisos de Usuario Cliente ==="); // Encabezado de permisos
+        System.out.println("- Depositar"); // Permiso para realizar depósitos
+        System.out.println("- Retirar"); // Permiso para realizar retiros
+        System.out.println("- Ver movimientos"); // Permiso para consultar movimientos
     }
 
     @Override

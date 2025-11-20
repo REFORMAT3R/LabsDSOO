@@ -9,22 +9,22 @@ public class GestorUsuarios {
         this.listaUsuarios = new ArrayList<>();
     }
 
-    public boolean agregarUsuario(Usuario usuario) {
-        if (!Validaciones.validarObjeto(usuario)) {
+    // Método agregarUsuario modificado según la guía: cambió de boolean a void, parámetro de "usuario" a "u"
+    public void agregarUsuario(Usuario u) { // Cambio de firma: ahora es void en lugar de boolean, parámetro renombrado a "u"
+        if (!Validaciones.validarObjeto(u)) { // Valida que el usuario no sea nulo
             System.out.println("Error: El usuario no puede ser nulo.");
-            return false;
+            return; // Sale del método si el usuario es nulo (cambió de return false a return)
         }
         
-        if (existeUsuario(usuario.getNombreUsuario())) {
+        if (existeUsuario(u.getNombreUsuario())) { // Verifica si ya existe un usuario con ese nombre
             System.out.println("Error: Ya existe un usuario con el nombre '" + 
-                        usuario.getNombreUsuario() + "'.");
-            return false;
+                        u.getNombreUsuario() + "'.");
+            return; // Sale del método si el usuario ya existe (cambió de return false a return)
         }
         
-        listaUsuarios.add(usuario);
-        System.out.println("Usuario agregado correctamente: " + usuario.getNombreUsuario());
-        return true;
-    }
+        listaUsuarios.add(u); // Agrega el usuario a la lista
+        System.out.println("Usuario agregado correctamente: " + u.getNombreUsuario()); // Confirma la operación
+    } // Método ahora es void, no retorna boolean (cambió de return true a no retornar nada)
 
     public Usuario buscarUsuario(String nombreUsuario) {
         if (!Validaciones.validarTexto(nombreUsuario)) {
@@ -211,11 +211,8 @@ public class GestorUsuarios {
         
         UsuarioCliente usuarioCliente = new UsuarioCliente(nombreUsuario, contrasenia, true, cliente);
         
-        if (agregarUsuario(usuarioCliente)) {
-            return usuarioCliente;
-        }
-        
-        return null;
+        agregarUsuario(usuarioCliente); // Llamada actualizada: ya no verifica el retorno boolean, solo llama al método void
+        return usuarioCliente; // Retorna el usuario creado directamente (cambió de if/return null a return directo)
     }
     
     public UsuarioEmpleado crearUsuarioEmpleado(String nombreUsuario, String contrasenia, Empleado empleado) {
@@ -241,11 +238,8 @@ public class GestorUsuarios {
         
         UsuarioEmpleado usuarioEmpleado = new UsuarioEmpleado(nombreUsuario, contrasenia, true, empleado);
         
-        if (agregarUsuario(usuarioEmpleado)) {
-            return usuarioEmpleado;
-        }
-        
-        return null;
+        agregarUsuario(usuarioEmpleado); // Llamada actualizada: ya no verifica el retorno boolean, solo llama al método void
+        return usuarioEmpleado; // Retorna el usuario creado directamente (cambió de if/return null a return directo)
     }
     
     public UsuarioAdministrador crearUsuarioAdministrador(String nombreUsuario, String contrasenia, Administrador administrador) {
@@ -271,11 +265,8 @@ public class GestorUsuarios {
         
         UsuarioAdministrador usuarioAdmin = new UsuarioAdministrador(nombreUsuario, contrasenia, true, administrador);
         
-        if (agregarUsuario(usuarioAdmin)) {
-            return usuarioAdmin;
-        }
-        
-        return null;
+        agregarUsuario(usuarioAdmin); // Llamada actualizada: ya no verifica el retorno boolean, solo llama al método void
+        return usuarioAdmin; // Retorna el usuario creado directamente (cambió de if/return null a return directo)
     }
 
     /* Getter */
