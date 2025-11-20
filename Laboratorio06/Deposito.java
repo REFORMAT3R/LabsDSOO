@@ -1,12 +1,12 @@
 public class Deposito extends Transaccion {
     /*Constructor con empleado*/
-    public Deposito(Empleado empleado, double monto, String fecha, String hora, String id) {
-        super(empleado, monto, fecha, hora, id);
+    public Deposito(Empleado empleado, double monto, String id) {
+        super(empleado, monto, id);
     }
 
     /*Constructor sin empleado*/
-    public Deposito(double monto, String fecha, String hora, String id) {
-        super(monto, fecha, hora, id);
+    public Deposito(double monto, String id) {
+        super(monto, id);
     }
 
     @Override

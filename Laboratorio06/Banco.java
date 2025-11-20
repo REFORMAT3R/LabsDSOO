@@ -6,7 +6,6 @@ public class Banco {
     private ArrayList<Empleado> listaEmpleados;
     private ArrayList<Cuenta> listaCuentas;
     private ArrayList<Titular> listaTitular;
-    private String ultimoError;
 
     /*Constructor*/
     public Banco() {
@@ -14,438 +13,336 @@ public class Banco {
         this.listaEmpleados = new ArrayList<>();
         this.listaCuentas = new ArrayList<>();
         this.listaTitular = new ArrayList<>();
-        this.ultimoError = "";
     }
 
-    /*======== REGISTROS ========*/
-    public boolean registrarCliente(Cliente cliente) {
-        if (!validarRegistroCliente(cliente)) return false;
+    /* === MÉTODOS DE REGISTRO === */
+
+    public void registrarCliente(Cliente cliente) {
+        if (!Validaciones.validarObjeto(cliente)) {
+            System.out.println("Error: El cliente no puede ser nulo.");
+            return;
+        }
+        
+        if (buscarCliente(cliente.getCodigoCliente()) != null) {
+            System.out.println("Error: Ya existe un cliente con el codigo " + cliente.getCodigoCliente());
+            return;
+        }
+        
         listaClientes.add(cliente);
-        return true;
+        System.out.println("Cliente registrado correctamente: " + cliente.getApellido() + " " 
+        + cliente.getNombre());
     }
 
-    public boolean registrarEmpleado(Empleado empleado) {
-        if (!validarRegistroEmpleado(empleado)) return false;
-        listaEmpleados.add(empleado);
-        return true;
-    }
-
-    public boolean registrarCuenta(Cuenta cuenta) {
-        if (!validarRegistroCuenta(cuenta)) return false;
+    public void registrarCuenta(Cuenta cuenta) {
+        if (!Validaciones.validarObjeto(cuenta)) {
+            System.out.println("Error: La cuenta no puede ser nula.");
+            return;
+        }
+        
+        if (buscarCuenta(cuenta.getCodigoCuenta()) != null) {
+            System.out.println("Error: Ya existe una cuenta con el codigo " + cuenta.getCodigoCuenta());
+            return;
+        }
+        
         listaCuentas.add(cuenta);
-        return true;
     }
 
-    public boolean registrarTitular(Titular titular) {
-        if (!validarRegistroTitular(titular)) return false;
-        listaTitular.add(titular);
-        return true;
+    public void registrarEmpleado(Empleado empleado) {
+        if (!Validaciones.validarObjeto(empleado)) {
+            System.out.println("Error: El empleado no puede ser nulo.");
+            return;
+        }
+        
+        if (buscarEmpleado(empleado.getCodigoEmpleado()) != null) {
+            System.out.println("Error: Ya existe un empleado con el codigo " + empleado.getCodigoEmpleado());
+            return;
+        }
+        
+        listaEmpleados.add(empleado);
+        System.out.println("Empleado registrado correctamente: " + empleado.getApellido() + " " 
+        + empleado.getNombre());
     }
 
-    /*======== BÚSQUEDA ========*/
-    public Cliente buscarCliente(String codigoCliente) {
-        if (!Validaciones.validarCodigoCliente(codigoCliente)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("codigo_cliente");
-            return null;
+    public void registrarTitular(Cliente cliente, Cuenta cuenta) {
+        if (!Validaciones.validarObjeto(cliente) || !Validaciones.validarObjeto(cuenta)) {
+            System.out.println("Error: Cliente o cuenta no pueden ser nulos.");
+            return;
         }
-        for (Cliente cliente : listaClientes) {
-            if (cliente.getCodigoCliente().equalsIgnoreCase(codigoCliente)) {
-                return cliente;
-            }
+        
+        if (existeTitular(cliente.getCodigoCliente(), cuenta.getCodigoCuenta()) != null) {
+            System.out.println("Error: Ya existe un titular con esos datos.");
+            return;
         }
-        return null;
+        
+        listaTitular.add(new Titular(cliente, cuenta));
     }
+
+    /* === MÉTODOS DE BÚSQUEDA === */
 
     public Empleado buscarEmpleado(String codigoEmpleado) {
-        if (!Validaciones.validarCodigoEmpleado(codigoEmpleado)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("codigo_empleado");
+        if (!Validaciones.validarTexto(codigoEmpleado)) {
             return null;
         }
-        for (Empleado empleado : listaEmpleados) {
-            if (empleado.getCodigoEmpleado().equalsIgnoreCase(codigoEmpleado)) {
-                return empleado;
+        
+        for (Empleado e : listaEmpleados) {
+            if(e.getCodigoEmpleado().equalsIgnoreCase(codigoEmpleado)) {
+                return e;
             }
         }
         return null;
     }
-    
+
+    public Cliente buscarCliente(String codigoCliente) {
+        if (!Validaciones.validarTexto(codigoCliente)) {
+            return null;
+        }
+        
+        for (Cliente c : listaClientes) {
+            if(c.getCodigoCliente().equalsIgnoreCase(codigoCliente)) {
+                return c;
+            }
+        }
+        return null;
+    }
+
     public Cuenta buscarCuenta(String codigoCuenta) {
-        if (!Validaciones.validarCodigoCuenta(codigoCuenta)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("codigo_cuenta");
+        if (!Validaciones.validarTexto(codigoCuenta)) {
             return null;
         }
-        for (Cuenta cuenta : listaCuentas) {
-            if (cuenta.getCodigoCuenta().equalsIgnoreCase(codigoCuenta)) {
-                return cuenta;
+        
+        for (Cuenta c : listaCuentas) {
+            if(c.getCodigoCuenta().equalsIgnoreCase(codigoCuenta)) {
+                return c;
             }
         }
         return null;
     }
 
-    /*======== CREACIÓN DE CUENTA ========*/
-    public Cuenta crearCuenta(String codigoCuenta) {
-        if (!validarCreacionCuenta(codigoCuenta)) return null;
-        return new Cuenta(codigoCuenta);
-    }
-
-    /*======== CREACIÓN DE TRANSACCIONES ========*/
-    public Transaccion crearDepositoEmpleado(Cuenta cuenta, Empleado empleado, double monto, 
-                                            String fecha, String hora, String id) {
-        if (!validarDepositoEmpleado(cuenta, empleado, monto, fecha, hora, id)) return null;
-        Deposito deposito = new Deposito(empleado, monto, fecha, hora, id);
-        deposito.procesar(cuenta);
-        return deposito;
-    }
-
-    public Transaccion crearDepositoCliente(Cuenta cuenta, double monto, String fecha, 
-                                            String hora, String id) {
-        if (!validarDepositoCliente(cuenta, monto, fecha, hora, id)) return null;
-        Deposito deposito = new Deposito(monto, fecha, hora, id);
-        deposito.procesar(cuenta);
-        return deposito;
-    }
-
-    public Transaccion crearRetiroEmpleado(Cuenta cuenta, Empleado empleado, double monto, 
-                                            String fecha, String hora, String id) {
-        if (!validarRetiroEmpleado(cuenta, empleado, monto, fecha, hora, id)) return null;
-        Retiro retiro = new Retiro(empleado, monto, fecha, hora, id);
-        retiro.procesar(cuenta);
-        return retiro;
-    }
-
-    public Transaccion crearRetiroCliente(Cuenta cuenta, double monto, String fecha, 
-                                            String hora, String id) {
-        if (!validarRetiroCliente(cuenta, monto, fecha, hora, id)) return null;
-        Retiro retiro = new Retiro(monto, fecha, hora, id);
-        retiro.procesar(cuenta);
-        return retiro;
-    }
-
-    public Transaccion crearTransferenciaEmpleado(Empleado empleado, Cuenta cuenta, 
-                                                    Cuenta cuentaDestino, double monto, 
-                                                    String fecha, String hora, String id) {
-        if (!validarTransferenciaEmpleado(empleado, cuenta, cuentaDestino, monto, fecha, hora, id))
+    public Titular existeTitular(String codigoCliente, String codigoCuenta) {
+        if (!Validaciones.validarTexto(codigoCliente) || !Validaciones.validarTexto(codigoCuenta)) {
             return null;
-        Transferencia transferencia = new Transferencia(empleado, cuentaDestino, monto, fecha, hora, id);
-        transferencia.procesar(cuenta);
-        return transferencia;
+        }
+        
+        for(Titular t : listaTitular) {
+            if(t.getCliente().getCodigoCliente().equalsIgnoreCase(codigoCliente) && 
+            t.getCuenta().getCodigoCuenta().equalsIgnoreCase(codigoCuenta)) {
+                return t;
+            }
+        }
+        return null;
     }
 
-    public Transaccion crearTransferenciaCliente(Cuenta cuenta, Cuenta cuentaDestino, 
-                                                double monto, String fecha, String hora, String id) {
-        if (!validarTransferenciaCliente(cuenta, cuentaDestino, monto, fecha, hora, id)) return null;
-        Transferencia transferencia = new Transferencia(cuentaDestino, monto, fecha, hora, id);
-        transferencia.procesar(cuenta);
-        return transferencia;
+    /* === CREACIÓN DE CUENTA === */
+
+    public void crearCuenta(String codigoCuenta, Cliente cliente) {
+        if (!Validaciones.validarCodigoCuenta(codigoCuenta)) {
+            System.out.println("Error: " + Validaciones.obtenerMensajeError("codigo_cuenta"));
+            return;
+        }
+        
+        if (!Validaciones.validarObjeto(cliente)) {
+            System.out.println("Error: El cliente no puede ser nulo.");
+            return;
+        }
+        
+        Cuenta nuevaCuenta = new Cuenta(codigoCuenta);
+        registrarCuenta(nuevaCuenta);
+        registrarTitular(cliente, nuevaCuenta);
+        System.out.println("Cuenta creada y registrada correctamente");
     }
+
+    /* === TRANSACCIONES === */
+
+    public Deposito depositar(String codigoCliente, String codigoCuenta, double monto, 
+                            Empleado empleado, String ID) {
+        if (!validarDatosTransaccion(codigoCliente, codigoCuenta, ID)) {
+            return null;
+        }
+        
+        Titular titular = existeTitular(codigoCliente, codigoCuenta);
+        
+        if(titular != null) {
+            Deposito dep = new Deposito(empleado, monto, ID);
+            dep.procesar(titular.getCuenta());
+            titular.getCuenta().agregarTransaccion(dep);
+            imprimirEstadoValidacion(true, dep);
+            return dep;
+        } else {
+            imprimirEstadoValidacion(false, null);
+            return null;
+        }
+    }
+
+    public Retiro retirar(String codigoCliente, String codigoCuenta, double monto, 
+                        Empleado empleado, String ID) {
+        if (!validarDatosTransaccion(codigoCliente, codigoCuenta, ID)) {
+            return null;
+        }
+        
+        Titular titular = existeTitular(codigoCliente, codigoCuenta);
+        
+        if(titular != null) {
+            Retiro ret = new Retiro(empleado, monto, ID);
+            ret.procesar(titular.getCuenta());
+            titular.getCuenta().agregarTransaccion(ret);
+            imprimirEstadoValidacion(true, ret);
+            return ret;
+        } else {
+            imprimirEstadoValidacion(false, null);
+            return null;
+        }
+    }
+
+    public Transferencia transferir(String codigoClienteOrigen, String codigoCuentaOrigen, 
+                                String codigoCuentaDestino, double monto, Empleado empleado, String ID) {
+        
+        if (!validarDatosTransaccion(codigoClienteOrigen, codigoCuentaOrigen, ID)) {
+            return null;
+        }
+        
+        if (!Validaciones.validarCodigoCuenta(codigoCuentaDestino)) {
+            System.out.println("Error: " + Validaciones.obtenerMensajeError("codigo_cuenta"));
+            return null;
+        }
+        
+        if (!Validaciones.validarCuentasDiferentes(codigoCuentaOrigen, codigoCuentaDestino)) {
+            System.out.println("Error: " + Validaciones.obtenerMensajeError("cuentas_iguales"));
+            return null;
+        }
+        
+        Titular titular = existeTitular(codigoClienteOrigen, codigoCuentaOrigen);
+        Cuenta destino = buscarCuenta(codigoCuentaDestino);
+
+        if(titular != null && destino != null) {
+            Transferencia trans = new Transferencia(empleado, destino, monto, ID);
+            trans.procesar(titular.getCuenta());
+            titular.getCuenta().agregarTransaccion(trans);
+            destino.agregarTransaccion(trans);
+            imprimirEstadoValidacion(true, trans);
+            return trans;
+        } else {
+            if (titular == null) {
+                System.out.println("Error: el cliente no es titular de la cuenta o no existe.");
+            }
+            if (destino == null) {
+                System.out.println("Error: la cuenta destino no existe.");
+            }
+            return null;
+        }
+    }
+
+    /* === MÉTODO AUXILIAR DE VALIDACIÓN === */
     
-    /*======== AGREGAR TRANSACCION A HISTORIAL ========*/
-    public boolean agregarTransaccion(Transaccion transaccion, Cuenta cuenta) {
-        if (!Validaciones.validarObjeto(transaccion) || !Validaciones.validarObjeto(cuenta)) {
-            ultimoError = "Error: Transacción o cuenta no válidas";
+    private boolean validarDatosTransaccion(String codigoCliente, String codigoCuenta, String ID) {
+        if (!Validaciones.validarCodigoCliente(codigoCliente)) {
+            System.out.println("Error: " + Validaciones.obtenerMensajeError("codigo_cliente"));
             return false;
         }
-        cuenta.getHistorial().add(transaccion);
+        
+        if (!Validaciones.validarCodigoCuenta(codigoCuenta)) {
+            System.out.println("Error: " + Validaciones.obtenerMensajeError("codigo_cuenta"));
+            return false;
+        }
+        
+        if (!Validaciones.validarIdTransaccion(ID)) {
+            System.out.println("Error: " + Validaciones.obtenerMensajeError("id_transaccion"));
+            return false;
+        }
+        
         return true;
     }
 
-    public Titular existeTitularCuenta(String codigoCuenta, String codigoCliente) {
-        if (!Validaciones.validarCodigoCuenta(codigoCuenta) || 
-            !Validaciones.validarCodigoCliente(codigoCliente)) {
-            return null;
+    public void imprimirEstadoValidacion(boolean valido, Transaccion t) {
+        if(valido) {
+            t.mostrarEstado();
+        } else {
+            System.out.println("Error: el cliente no es titular de la cuenta o no existe.");
         }
-        for (Titular titular : listaTitular) {
-            if (titular.getCliente().getCodigoCliente().equalsIgnoreCase(codigoCliente) && 
-                titular.getCuenta().getCodigoCuenta().equalsIgnoreCase(codigoCuenta)) {
-                return titular;
-            }
-        }
-        return null;
     }
 
-    public Cuenta validarTransaccion(Titular titular) {
-        return titular != null ? titular.getCuenta() : null;
-    }
-
-    // ==================== MÉTODOS DE IMPRESIÓN ====================
+    /* === MÉTODOS PARA MOSTRAR LISTAS === */
     
-    public void imprimirEstadoCliente(Cliente cliente) {
-        System.out.println(cliente == null ? "No se encontró el cliente" :
-                                            "El cliente fue encontrado");
-    }
-
-    public void imprimirEstadoCuenta(Cuenta cuenta) {
-        System.out.println(cuenta == null ? "No se encontró la cuenta" :
-                                            "La cuenta fue encontrada");
-    }
-
-    public void imprimirEstadoEmpleado(Empleado empleado) {
-        System.out.println(empleado == null ? "No se encontró el empleado" :
-                                            "El empleado fue encontrado");
-    }
-
-    public void verificarClientes(Cliente nuevoCliente) {
+    public void mostrarClientes() {
         if (listaClientes.isEmpty()) {
             System.out.println("No hay clientes registrados.");
-        } else {
-            registrarCliente(nuevoCliente);
-            System.out.println("Cliente registrado correctamente.");
+            return;
+        }
+        System.out.println("\n=== LISTA DE CLIENTES ===");
+        for (Cliente c : listaClientes) {
+            c.mostrarDatos();
+            System.out.println("------------------------");
         }
     }
-
-    public void verificarEmpleados(Empleado nuevoEmpleado) {
+    
+    public void mostrarEmpleados() {
         if (listaEmpleados.isEmpty()) {
             System.out.println("No hay empleados registrados.");
-        } else {
-            registrarEmpleado(nuevoEmpleado);
-            System.out.println("Empleado registrado correctamente.");
+            return;
+        }
+        System.out.println("\n=== LISTA DE EMPLEADOS ===");
+        for (Empleado e : listaEmpleados) {
+            e.mostrarDatos();
+            System.out.println("------------------------");
         }
     }
-
-    public void verificarCuentas(Cuenta nuevaCuenta) {
+    
+    public void mostrarCuentas() {
         if (listaCuentas.isEmpty()) {
             System.out.println("No hay cuentas registradas.");
-        } else {
-            registrarCuenta(nuevaCuenta);
-            System.out.println("Cuenta registrada correctamente.");
+            return;
+        }
+        System.out.println("\n=== LISTA DE CUENTAS ===");
+        for (Cuenta c : listaCuentas) {
+            c.mostrarDatos();
         }
     }
-
-    public void verificarTitulares(Titular nuevoTitular) {
+    
+    public void mostrarTitulares() {
         if (listaTitular.isEmpty()) {
             System.out.println("No hay titulares registrados.");
-        } else {
-            registrarTitular(nuevoTitular);
-            System.out.println("Titular registrado correctamente.");
+            return;
+        }
+        System.out.println("\n=== LISTA DE TITULARES ===");
+        for (Titular t : listaTitular) {
+            t.mostrarDatos();
+            System.out.println("------------------------");
         }
     }
-
-    public void imprimirUltimoError() {
-        if (!ultimoError.isEmpty()) {
-            System.out.println(ultimoError);
-        }
-    }
-
-    // ==================== MÉTODOS PRIVADOS DE VALIDACIÓN ====================
     
-    private boolean validarRegistroCliente(Cliente cliente) {
-        if (!Validaciones.validarObjeto(cliente)) {
-            ultimoError = "Error: Cliente no válido";
-            return false;
+    public ArrayList<Cuenta> buscarCuentasDeCliente(String codigoCliente) {
+        ArrayList<Cuenta> cuentasCliente = new ArrayList<>();
+        
+        if (!Validaciones.validarTexto(codigoCliente)) {
+            return cuentasCliente;
         }
-        if (!Validaciones.validarCodigoCliente(cliente.getCodigoCliente())) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("codigo_cliente");
-            return false;
+        
+        for (Titular t : listaTitular) {
+            if (t.getCliente().getCodigoCliente().equalsIgnoreCase(codigoCliente)) {
+                cuentasCliente.add(t.getCuenta());
+            }
         }
-        if (buscarCliente(cliente.getCodigoCliente()) != null) {
-            ultimoError = "Error: Ya existe un cliente con ese código";
-            return false;
+        
+        return cuentasCliente;
+    }
+    
+    public void mostrarCuentasDeCliente(String codigoCliente) {
+        ArrayList<Cuenta> cuentas = buscarCuentasDeCliente(codigoCliente);
+        
+        if (cuentas.isEmpty()) {
+            System.out.println("El cliente no tiene cuentas registradas.");
+            return;
         }
-        return true;
+        
+        System.out.println("\n=== CUENTAS DEL CLIENTE " + codigoCliente + " ===");
+        for (Cuenta c : cuentas) {
+            c.mostrarDatos();
+        }
     }
 
-    private boolean validarRegistroEmpleado(Empleado empleado) {
-        if (!Validaciones.validarObjeto(empleado)) {
-            ultimoError = "Error: Empleado no válido";
-            return false;
-        }
-        if (!Validaciones.validarCodigoEmpleado(empleado.getCodigoEmpleado())) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("codigo_empleado");
-            return false;
-        }
-        if (buscarEmpleado(empleado.getCodigoEmpleado()) != null) {
-            ultimoError = "Error: Ya existe un empleado con ese código";
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validarRegistroCuenta(Cuenta cuenta) {
-        if (!Validaciones.validarObjeto(cuenta)) {
-            ultimoError = "Error: Cuenta no válida";
-            return false;
-        }
-        if (!Validaciones.validarCodigoCuenta(cuenta.getCodigoCuenta())) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("codigo_cuenta");
-            return false;
-        }
-        if (buscarCuenta(cuenta.getCodigoCuenta()) != null) {
-            ultimoError = "Error: Ya existe una cuenta con ese código";
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validarRegistroTitular(Titular titular) {
-        if (!Validaciones.validarObjeto(titular) || 
-            !Validaciones.validarObjeto(titular.getCliente()) || 
-            !Validaciones.validarObjeto(titular.getCuenta())) {
-            ultimoError = "Error: Titular, cliente o cuenta no válidos";
-            return false;
-        }
-        if (existeTitularCuenta(titular.getCuenta().getCodigoCuenta(), 
-                                titular.getCliente().getCodigoCliente()) != null) {
-            ultimoError = "Error: Ya existe esta relación cliente-cuenta";
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validarCreacionCuenta(String codigoCuenta) {
-        if (!Validaciones.validarCodigoCuenta(codigoCuenta)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("codigo_cuenta");
-            return false;
-        }
-        if (buscarCuenta(codigoCuenta) != null) {
-            ultimoError = "Error: Ya existe una cuenta con ese código";
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validarDepositoEmpleado(Cuenta cuenta, Empleado empleado, double monto, 
-                                            String fecha, String hora, String id) {
-        if (!Validaciones.esCuentaValida(cuenta)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("cuenta_invalida");
-            return false;
-        }
-        if (!Validaciones.validarObjeto(empleado)) {
-            ultimoError = "Error: Empleado no válido";
-            return false;
-        }
-        if (!Validaciones.validarMontoDeposito(monto)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("monto_deposito");
-            return false;
-        }
-        if (!Validaciones.validarDatosTransaccion(fecha, hora, id)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("datos_transaccion");
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validarDepositoCliente(Cuenta cuenta, double monto, String fecha, 
-                                            String hora, String id) {
-        if (!Validaciones.esCuentaValida(cuenta)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("cuenta_invalida");
-            return false;
-        }
-        if (!Validaciones.validarMontoDeposito(monto)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("monto_deposito");
-            return false;
-        }
-        if (!Validaciones.validarDatosTransaccion(fecha, hora, id)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("datos_transaccion");
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validarRetiroEmpleado(Cuenta cuenta, Empleado empleado, double monto, 
-                                            String fecha, String hora, String id) {
-        if (!Validaciones.esCuentaValida(cuenta)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("cuenta_invalida");
-            return false;
-        }
-        if (!Validaciones.validarObjeto(empleado)) {
-            ultimoError = "Error: Empleado no válido";
-            return false;
-        }
-        if (!Validaciones.validarMontoRetiro(monto)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("monto_retiro");
-            return false;
-        }
-        if (!Validaciones.validarSaldoSuficiente(cuenta, monto)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("saldo_insuficiente");
-            return false;
-        }
-        if (!Validaciones.validarDatosTransaccion(fecha, hora, id)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("datos_transaccion");
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validarRetiroCliente(Cuenta cuenta, double monto, String fecha, 
-                                        String hora, String id) {
-        if (!Validaciones.esCuentaValida(cuenta)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("cuenta_invalida");
-            return false;
-        }
-        if (!Validaciones.validarMontoRetiro(monto)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("monto_retiro");
-            return false;
-        }
-        if (!Validaciones.validarSaldoSuficiente(cuenta, monto)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("saldo_insuficiente");
-            return false;
-        }
-        if (!Validaciones.validarDatosTransaccion(fecha, hora, id)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("datos_transaccion");
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validarTransferenciaEmpleado(Empleado empleado, Cuenta cuenta, Cuenta cuentaDestino, 
-                                                double monto, String fecha, String hora, String id) {
-        if (!Validaciones.esCuentaValida(cuenta) || !Validaciones.esCuentaValida(cuentaDestino)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("cuenta_invalida");
-            return false;
-        }
-        if (!Validaciones.validarCuentasDiferentes(cuenta.getCodigoCuenta(), cuentaDestino.getCodigoCuenta())) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("cuentas_iguales");
-            return false;
-        }
-        if (!Validaciones.validarObjeto(empleado)) {
-            ultimoError = "Error: Empleado no válido";
-            return false;
-        }
-        if (!Validaciones.validarMontoTransferencia(monto)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("monto_transferencia");
-            return false;
-        }
-        if (!Validaciones.validarSaldoSuficiente(cuenta, monto)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("saldo_insuficiente");
-            return false;
-        }
-        if (!Validaciones.validarDatosTransaccion(fecha, hora, id)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("datos_transaccion");
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validarTransferenciaCliente(Cuenta cuenta, Cuenta cuentaDestino, double monto, 
-                                                String fecha, String hora, String id) {
-        if (!Validaciones.esCuentaValida(cuenta) || !Validaciones.esCuentaValida(cuentaDestino)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("cuenta_invalida");
-            return false;
-        }
-        if (!Validaciones.validarCuentasDiferentes(cuenta.getCodigoCuenta(), cuentaDestino.getCodigoCuenta())) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("cuentas_iguales");
-            return false;
-        }
-        if (!Validaciones.validarMontoTransferencia(monto)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("monto_transferencia");
-            return false;
-        }
-        if (!Validaciones.validarSaldoSuficiente(cuenta, monto)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("saldo_insuficiente");
-            return false;
-        }
-        if (!Validaciones.validarDatosTransaccion(fecha, hora, id)) {
-            ultimoError = "Error: " + Validaciones.obtenerMensajeError("datos_transaccion");
-            return false;
-        }
-        return true;
-    }
-
-    // ==================== GETTERS ====================
+    /* === GETTERS === */
     
     public ArrayList<Cliente> getListaClientes() {return listaClientes;}
     public ArrayList<Empleado> getListaEmpleados() {return listaEmpleados;}
     public ArrayList<Cuenta> getListaCuentas() {return listaCuentas;}
     public ArrayList<Titular> getListaTitular() {return listaTitular;}
-    public String getUltimoError() {return ultimoError;}
 }

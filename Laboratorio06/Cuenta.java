@@ -18,7 +18,6 @@ public class Cuenta {
         historial.add(transaccion);
     }
 
-
     public void mostrarHistorial() {
         System.out.println("Historial de transacciones de la cuenta " + codigoCuenta + ":");
         for (Transaccion t : historial) {

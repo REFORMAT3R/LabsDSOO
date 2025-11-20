@@ -1,12 +1,12 @@
 public class Retiro extends Transaccion {
     /*Constructor con empleado*/
-    public Retiro(Empleado empleado, double monto, String fecha, String hora, String id) {
-        super(empleado, monto, fecha, hora, id);
+    public Retiro(Empleado empleado, double monto, String id) {
+        super(empleado, monto, id);
     }
 
     /*Constructor sin empleado*/
-    public Retiro(double monto, String fecha, String hora, String id) {
-        super(monto, fecha, hora, id);
+    public Retiro(double monto, String id) {
+        super(monto, id);
     }
 
     @Override

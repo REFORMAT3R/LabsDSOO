@@ -3,15 +3,14 @@ public class Transferencia extends Transaccion {
     private Cuenta cuentaDestino;
 
     /*Constructor con empleado*/
-    public Transferencia(Empleado empleado, Cuenta cuentaDestino, double monto,
-                        String fecha, String hora, String id) {
-        super(empleado, monto, fecha, hora, id);
+    public Transferencia(Empleado empleado, Cuenta cuentaDestino, double monto, String id) {
+        super(empleado, monto, id);
         this.cuentaDestino = cuentaDestino;
     }
 
     /*Constructor sin empleado*/
-    public Transferencia(Cuenta cuentaDestino, double monto, String fecha, String hora, String id) {
-        super(monto, fecha, hora, id);
+    public Transferencia(Cuenta cuentaDestino, double monto, String id) {
+        super(monto, id);
         this.cuentaDestino = cuentaDestino;
     }
 

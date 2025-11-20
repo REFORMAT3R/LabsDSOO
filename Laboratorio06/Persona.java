@@ -29,7 +29,16 @@ public abstract class Persona {
     public String getDni() {return dni;}
     public String getDireccion() {return direccion;}
 
-    
+    /*Setters*/
+    public void setNombre(String nombre) {this.nombre = nombre;}
+    public void setApellido(String apellido) {this.apellido = apellido;}
+    public void setTelefono(String telefono) {this.telefono = telefono;}
+    public void setCorreo(String correo) {this.correo = correo;}
+    public void setEdad(int edad) {this.edad = edad;}
+    public void setDni(String dni) {this.dni = dni;}
+    public void setDireccion(String direccion) {this.direccion = direccion;}
+
+    /*Método mostrar*/
     public void mostrarDatos() {
         System.out.println("Nombre: " + nombre + " " + apellido);
         System.out.println("Teléfono: " + telefono);

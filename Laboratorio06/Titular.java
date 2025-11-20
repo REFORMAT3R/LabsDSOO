@@ -16,6 +16,11 @@ public class Titular {
     }
 
     /*Getters*/
-    public Cliente getCliente() {return cliente;}
-    public Cuenta getCuenta() {return cuenta;}
+    public Cliente getCliente() {
+        return cliente;
+    }
+    
+    public Cuenta getCuenta() {
+        return cuenta;
+    }
 }
