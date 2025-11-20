@@ -17,23 +17,14 @@ public class UsuarioAdministrador extends Usuario {
     public Administrador getAdministrador() {return administrador;}
     public void setAdministrador(Administrador administrador) {this.administrador = administrador;}
 
-    /* Implementación de mostrarPermisos */
+    /* Implementación de mostrarPermisos según la guía de laboratorio */
     @Override
     public void mostrarPermisos() {
-        System.out.println("=== Permisos de Usuario Administrador ===");
-        System.out.println("\n--- Gestión de Usuarios ---");
-        System.out.println("1. Registrar, modificar y eliminar clientes");
-        System.out.println("2. Registrar, modificar y eliminar empleados");
-        System.out.println("3. Activar/desactivar cuentas de usuario");
-        System.out.println("4. Restablecer contraseñas");
-        System.out.println("\n--- Gestión de Cuentas ---");
-        System.out.println("1. Crear, modificar y cerrar cuentas bancarias");
-        System.out.println("2. Modificar saldos (ajustes administrativos)");
-        System.out.println("3. Ver todas las cuentas del sistema");
-        System.out.println("\n--- Gestión de Transacciones ---");
-        System.out.println("1. Procesar todo tipo de transacciones");
-        System.out.println("2. Anular o revertir transacciones");
-        System.out.println("3. Auditar historial completo");
+        System.out.println("=== Permisos de Usuario Administrador ==="); // Encabezado de permisos
+        System.out.println("- Crear usuarios"); // Permiso para crear nuevos usuarios en el sistema
+        System.out.println("- Modificar usuarios"); // Permiso para modificar usuarios existentes
+        System.out.println("- Eliminar usuarios"); // Permiso para eliminar usuarios del sistema
+        System.out.println("- Permisos totales"); // Indica que tiene acceso completo al sistema
     }
 
     @Override

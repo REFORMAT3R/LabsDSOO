@@ -14,15 +14,12 @@ public class UsuarioEmpleado extends Usuario {
     public Empleado getEmpleado() {return empleado;}
     public void setEmpleado(Empleado empleado) {this.empleado = empleado;}
 
+    // Sobrescritura del método mostrarPermisos según la guía de laboratorio
     @Override
     public void mostrarPermisos() {
-        System.out.println("=== Permisos de Usuario Empleado ===");
-        System.out.println("1. Registrar nuevos clientes");
-        System.out.println("2.Crear cuentas bancarias");
-        System.out.println("3. Procesar transacciones (depósitos, retiros, transferencias)");
-        System.out.println("4. Consultar información de clientes");
-        System.out.println("5. Consultar información de cuentas");
-        System.out.println("6. Ver historial de transacciones");
+        System.out.println("=== Permisos de Usuario Empleado ==="); // Encabezado de permisos
+        System.out.println("- Gestionar creación de cuentas"); // Permiso para crear cuentas bancarias
+        System.out.println("- Gestionar transacciones de clientes"); // Permiso para procesar transacciones de clientes
     }
 
     @Override

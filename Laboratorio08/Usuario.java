@@ -20,18 +20,20 @@ public abstract class Usuario {
     public void setContrasenia(String contrasenia) {this.contrasenia = contrasenia;}
     public void setEstado(boolean estado) {this.estado = estado;}
 
-    public boolean login(String usuario, String password) {
-        if (!estado) {
+    // Método login: valida credenciales del usuario según la guía de laboratorio
+    public boolean login(String usuario, String contraseña) { // Parámetro cambiado de "password" a "contraseña" según requerimientos
+        if (!estado) { // Verifica si el usuario está activo
             System.out.println("Usuario inactivo. No puede iniciar sesión.");
-            return false;
+            return false; // Retorna false si el usuario está inactivo
         }
         
-        if (this.nombreUsuario.equals(usuario) && this.contrasenia.equals(password)) {
+        // Compara el nombre de usuario y la contraseña proporcionados con los almacenados
+        if (this.nombreUsuario.equals(usuario) && this.contrasenia.equals(contraseña)) { // Usa el parámetro "contraseña" en la comparación
             System.out.println("Login exitoso. Bienvenido " + nombreUsuario);
-            return true;
+            return true; // Retorna true si las credenciales son correctas
         } else {
             System.out.println("Credenciales incorrectas.");
-            return false;
+            return false; // Retorna false si las credenciales no coinciden
         }
     }
 
