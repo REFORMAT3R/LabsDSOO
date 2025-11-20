@@ -3,7 +3,8 @@ public class UsuarioAdministrador extends Usuario {
     private Administrador administrador; // Referencia al objeto Administrador asociado
 
     /* Constructor */
-    public UsuarioAdministrador(String nombreUsuario, String contrasenia, boolean estado, Administrador administrador) {
+    public UsuarioAdministrador(String nombreUsuario, String contrasenia, boolean estado,
+                                Administrador administrador) {
         super(nombreUsuario, contrasenia, estado);
         this.administrador = administrador;
     }

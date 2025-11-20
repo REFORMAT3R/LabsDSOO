@@ -233,6 +233,7 @@ public class MenuSistema {
             System.out.println("\n=== PANEL CLIENTE (" + cli.getCliente().getNombre() + ") ===");
             System.out.println("1. Ver mis cuentas y saldos");
             System.out.println("2. Ver historial de transacciones");
+<<<<<<< HEAD
             System.out.println("3. Realizar Depósito"); 
             System.out.println("4. Realizar Retiro");  
             System.out.println("5. Cerrar Sesión");
@@ -242,16 +243,26 @@ public class MenuSistema {
             // Generamos un ID simulando una transacción de cajero automático (ATM)
             String idTxn = "TXN-ATM" + (int)(Math.random() * 10000);
 
+=======
+            System.out.println("3. Cerrar Sesión");
+            System.out.print("Opción: ");
+            
+            String op = sc.nextLine();
+>>>>>>> 7f57bcca2c2dac86f69ac5ae02ba5a90cb2971b9
             switch(op) {
                 case "1": 
                     banco.mostrarCuentasDeCliente(cli.getCliente().getCodigoCliente()); 
                     break;
+<<<<<<< HEAD
                     
+=======
+>>>>>>> 7f57bcca2c2dac86f69ac5ae02ba5a90cb2971b9
                 case "2": 
                     for(Cuenta c : banco.buscarCuentasDeCliente(cli.getCliente().getCodigoCliente())) {
                         c.mostrarHistorial();
                     }
                     break;
+<<<<<<< HEAD
                     
                 case "3": // Lógica de Depósito
                     System.out.println("\n--- DEPÓSITO ---");
@@ -278,6 +289,10 @@ public class MenuSistema {
                     
                 default: 
                     System.out.println("Opción incorrecta.");
+=======
+                case "3": atras = true; break;
+                default: System.out.println("Opción incorrecta.");
+>>>>>>> 7f57bcca2c2dac86f69ac5ae02ba5a90cb2971b9
             }
         }
     }
